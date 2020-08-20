@@ -54,7 +54,8 @@ class AuthController extends Controller
     }
     public function order(Request $request)
     {
-        $header = $request->header('Authorization');
+        // $header = explode(" ", $request->header('Authorization'))[1];
+        $header=$request->bearerToken();
         $query = DB::table('user_session')
             ->select(array(DB::raw('COUNT(1) as cnt')))
             ->where('value', '=', $header)
@@ -90,7 +91,8 @@ class AuthController extends Controller
     }
     public function addProduct(Request $request)
     {
-        $header = $request->header('Authorization');
+        // $header = explode(" ", $request->header('Authorization'))[1];
+        $header=$request->bearerToken();
         $query = DB::table('user_session')
             ->select(array(DB::raw('COUNT(1) as cnt')))
             ->where('value', '=', $header)
@@ -116,6 +118,7 @@ class AuthController extends Controller
             DB::table('products')->insert([
               ['name' => $request['name'], 'quantity' => $request['quantity']]
             ]);
+            return response()->json(['message'=>"You have added product."],200);
           }
           
         }else{
@@ -125,7 +128,8 @@ class AuthController extends Controller
     }
     public function showProducts(Request $request)
     {
-        $header = $request->header('Authorization');
+        // $header = explode(" ",$request->header('Authorization'))[1];
+        $header=$request->bearerToken();
         $query = DB::table('user_session')
             ->select(array(DB::raw('COUNT(1) as cnt')))
             ->where('value', '=', $header)
